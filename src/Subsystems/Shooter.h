@@ -13,8 +13,7 @@ private:
 public:
 	Shooter();
 	void InitDefaultCommand();
-	void run_shooter();
-	void stop_shooter();
+	void run_shooter(float speed);
 	~Shooter();
 
 };

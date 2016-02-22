@@ -10,8 +10,7 @@ public:
 	std::unique_ptr<Talon> motor;
 
 	BallCollector();
-	void Start();
-	void Stop();
+	void Run(float speed);
 	~BallCollector();
 };
 

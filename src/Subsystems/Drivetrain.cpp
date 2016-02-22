@@ -37,6 +37,43 @@ void Drivetrain::ArcadeDrive(float magnitude, float rotate) {
 	robot_drive->ArcadeDrive(magnitude, rotate, true);
 }
 
-void Drivetrain::DriveDistance(float distance) {
-	//left_primary_motor->GetEncVel() * left_primary_motor->GetNativeUnitsPerRotationScalar(CANTalon::FeedbackDevice::QuadEncoder);
+void Drivetrain::SetTargetDistance(float distance, float speed) {
+	target_distance = distance;
+	target_distance_speed = speed;
+
+	left_primary_motor->SetControlMode(left_primary_motor->ControlMode::kSpeed);
+	right_primary_motor->SetControlMode(right_primary_motor->ControlMode::kSpeed);
+}
+
+void Drivetrain::MoveToDistance() {
+	if(fabs(target_distance - left_primary_motor->GetPosition()) >= DISTANCE_THRESHOLD) {
+		left_primary_motor->Set(target_distance_speed, LEFT_SYNC_GROUP);
+	} else {
+		left_primary_motor->Set(0, LEFT_SYNC_GROUP);
+	}
+
+	if(fabs(target_distance - right_primary_motor->GetPosition()) >= DISTANCE_THRESHOLD) {
+		right_primary_motor->Set(target_distance_speed, RIGHT_SYNC_GROUP);
+	} else {
+		right_primary_motor->Set(0, RIGHT_SYNC_GROUP);
+	}
+}
+
+void Drivetrain::ResetDistance() {
+	target_distance = 0;
+	target_distance_speed = 0;
+
+	left_primary_motor->Set(0, LEFT_SYNC_GROUP);
+	right_primary_motor->Set(0, RIGHT_SYNC_GROUP);
+
+	left_primary_motor->SetPosition(0);
+	right_primary_motor->SetPosition(0);
+
+	left_primary_motor->SetControlMode(left_primary_motor->ControlMode::kVoltage);
+	right_primary_motor->SetControlMode(right_primary_motor->ControlMode::kVoltage);
+}
+
+bool Drivetrain::IsAtDistance() {
+	return fabs(target_distance - left_primary_motor->GetPosition()) >= DISTANCE_THRESHOLD &&
+			fabs(target_distance - right_primary_motor->GetPosition()) >= DISTANCE_THRESHOLD;
 }

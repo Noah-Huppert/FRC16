@@ -8,6 +8,12 @@ class Drivetrain: public Subsystem {
 private:
 	const int LEFT_SYNC_GROUP = 0;
 	const int RIGHT_SYNC_GROUP = 1;
+
+	const float DISTANCE_THRESHOLD = 5.0;
+
+	float target_distance = 0;
+	float target_distance_speed = 0;
+
 public:
 	std::shared_ptr<CANTalon> left_primary_motor;
 	std::shared_ptr<CANJaguar> left_secondary_motor;
@@ -22,7 +28,10 @@ public:
 	void TankDrive(float lSpeed, float rSpeed);
 	void ArcadeDrive(float magnitude, float rotate);
 
-	void DriveDistance(float distance);
+	void SetTargetDistance(float distance, float speed);
+	void MoveToDistance();
+	void ResetDistance();
+	bool IsAtDistance();
 };
 
 #endif

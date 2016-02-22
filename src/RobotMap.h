@@ -27,8 +27,8 @@ namespace RobotMap {
 	const int RIGHT_PRIMARY_MOTOR = 1;// Tallon
 	const int RIGHT_SECONDARY_MOTOR = 4;// Jaguar
 
-	const int RIGHT_SHOOTER_MOTOR = 5;
-	const int LEFT_SHOOTER_MOTOR = 6;
+	const int RIGHT_SHOOTER_MOTOR = 6;
+	const int LEFT_SHOOTER_MOTOR = 7;
 
 	const int INTAKE_MOTOR = 8;// Talon
 }

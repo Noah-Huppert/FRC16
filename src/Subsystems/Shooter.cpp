@@ -10,16 +10,11 @@ void Shooter::InitDefaultCommand() {
 
 }
 
-void Shooter::run_shooter() {
+void Shooter::run_shooter(float speed) {
 	//spins up the motors to shoot the ball
-	lMotor->SetSpeed(1.0);
-	rMotor->SetSpeed(1.0);
+	lMotor->SetSpeed(speed);
+	rMotor->SetSpeed(speed * -1);
 	//will need to stop the motors a few seconds after they're turned on
-}
-
-void Shooter::stop_shooter() {
-	lMotor->SetSpeed(0.0);
-	rMotor->SetSpeed(0.0);
 }
 
 Shooter::~Shooter() {

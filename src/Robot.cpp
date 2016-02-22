@@ -6,6 +6,7 @@
 
 #include "Subsystems/Shooter.h"
 #include "Subsystems/BallCollector.h"
+#include "Commands/DriveDistanceCommand.h"
 
 class Robot: public IterativeRobot {
 private:
@@ -13,9 +14,9 @@ private:
 	std::unique_ptr<XboxController> controller;
 
 	// Subsystems
-	std::unique_ptr<Drivetrain> drive_train;
-	std::unique_ptr<Shooter> shooter;
-	std::unique_ptr<BallCollector> ball_collector;
+	std::shared_ptr<Drivetrain> drive_train;
+	std::shared_ptr<Shooter> shooter;
+	std::shared_ptr<BallCollector> ball_collector;
 
 	void RobotInit() {
 		// Input devices
@@ -49,12 +50,17 @@ private:
 	 * or additional comparisons to the if-else structure below with additional strings & commands.
 	 */
 	void AutonomousInit() {
-		/* std::string autoSelected = SmartDashboard::GetString("Auto Selector", "Default");
-		if(autoSelected == "My Auto") {
-			autonomousCommand.reset(new MyAutoCommand());
-		} else {
-			autonomousCommand.reset(new ExampleCommand());
-		} */
+		/*
+		drive_train->SetTargetDistance(100, 0.2);
+
+		while(!drive_train->IsAtDistance()) {
+			drive_train->MoveToDistance();
+		}
+
+		drive_train->ResetDistance();
+		*/
+		DriveDistanceCommand cmd(drive_train, 100, 0.2);
+		cmd.Start();
 	}
 
 	void AutonomousPeriodic() {
@@ -66,6 +72,7 @@ private:
 	}
 
 	void TeleopPeriodic() {
+		SmartDashboard::PutNumber("Left Distance", drive_train->left_primary_motor->GetPosition());
 		// Calibrate
 		if(controller->GetButton(controller->ButtonRightJoystickPress)) {
 			controller->Calibrate();
@@ -80,16 +87,20 @@ private:
 
 		// Shooter control
 		if (controller->GetRightTrigger() >= 0.5) {
-			shooter->run_shooter();
-		}else{
-			shooter->stop_shooter();
+			shooter->run_shooter(1);
+		} else if (controller->GetButton(controller->ButtonRB)) {
+			shooter->run_shooter(1);
+		} else {
+			shooter->run_shooter(0);
 		}
 
 		// Ball Collector control
 		if (controller->GetLeftTrigger() >= 0.5) {
-			ball_collector->Start();
+			ball_collector->Run(1.0);
+		} else if(controller->GetButton(controller->ButtonLB)) {
+			ball_collector->Run(-1.0);
 		} else {
-			ball_collector->Stop();
+			ball_collector->Run(0);
 		}
 	}
 
