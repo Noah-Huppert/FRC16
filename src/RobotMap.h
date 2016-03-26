@@ -23,11 +23,11 @@
 namespace RobotMap {
 	const int OPERATOR_CONTROLLER_PORT = 0;
 
-	const int LEFT_PRIMARY_MOTOR = 2;// CAN - Talon
-	const int LEFT_SECONDARY_MOTOR = 3;// CAN - Jaguar
+	const int LEFT_PRIMARY_MOTOR = 1;// CAN - Talon
+	const int LEFT_SECONDARY_MOTOR = 4;// CAN - Jaguar
 
-	const int RIGHT_PRIMARY_MOTOR = 1;// CAN - Talon
-	const int RIGHT_SECONDARY_MOTOR = 4;// CAN - Jaguar
+	const int RIGHT_PRIMARY_MOTOR = 2;// CAN - Talon
+	const int RIGHT_SECONDARY_MOTOR = 3;// CAN - Jaguar
 
 	const int RIGHT_SHOOTER_MOTOR = 6;// PWM - Talon
 	const int LEFT_SHOOTER_MOTOR = 7;// PWM - Talon

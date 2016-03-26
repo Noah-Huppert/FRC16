@@ -11,14 +11,6 @@ public:
 
 	void Drive(float left, float right);
 
-	void Reset();
-	void InvertDirection();
-
-	void PrintInvertedStatus();
-
-	void UsePIDOutput(double output);
-	double ReturnPIDInput();
-
 private:
 	std::unique_ptr<RobotDrive> robot_drive;
 
@@ -26,8 +18,6 @@ private:
 	std::shared_ptr<CANJaguar> left_secondary_motor;
 	std::shared_ptr<CANTalon> right_primary_motor;
 	std::shared_ptr<CANJaguar> right_secondary_motor;
-
-	int direction_modifier;
 };
 
 #endif

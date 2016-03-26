@@ -21,16 +21,8 @@ DriveTrain::DriveTrain(): Subsystem("DriveTrain") {
 	right_primary_motor->Set(0, 1);
 	right_secondary_motor->Set(0, 1);
 
-	direction_modifier = -1;
-
-	//SetOutputRange(-1, 1);
-
 	robot_drive->SetSafetyEnabled(true);
 	robot_drive->SetExpiration(0.3);
-
-	//Disable();
-
-	Reset();
 }
 
 void DriveTrain::InitDefaultCommand() {
@@ -38,8 +30,8 @@ void DriveTrain::InitDefaultCommand() {
 }
 
 void DriveTrain::Drive(float left, float right) {
-	left *= direction_modifier;
-	right *= direction_modifier;
+	left *= -1;
+	right *= -1;
 
 	if(left < -1) {
 		left = -1;
@@ -54,30 +46,4 @@ void DriveTrain::Drive(float left, float right) {
 	}
 
 	robot_drive->TankDrive(left, right, false);
-}
-
-void DriveTrain::UsePIDOutput(double output) {
-	robot_drive->TankDrive(output, output, false);
-}
-
-double DriveTrain::ReturnPIDInput() {
-	return (left_primary_motor->GetPosition() + right_primary_motor->GetPosition()) / 2;
-}
-
-void DriveTrain::Reset() {
-	Drive(0, 0);
-
-	//left_primary_motor->SetPosition(0);
-	//right_primary_motor->SetPosition(0);
-
-	//Disable();
-	//SetSetpoint(0);
-}
-
-void DriveTrain::InvertDirection() {
-	direction_modifier *= -1;
-}
-
-void DriveTrain::PrintInvertedStatus() {
-	SmartDashboard::PutNumber("Direction", direction_modifier * -1);
 }

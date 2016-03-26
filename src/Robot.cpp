@@ -2,7 +2,7 @@
 #include "Robot.h"
 
 #include "RobotMap.h"
-#include "CommandGroups/AutonomousCommandGroup.h"
+#include "CommandGroups/AutonomousBreakObstacle.h"
 
 std::shared_ptr<DriveTrain> Robot::drive_train;
 std::shared_ptr<Shooter> Robot::shooter;
@@ -36,22 +36,18 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-	autonomousCommand.reset(new AutonomousCommandGroup());
-	//drive_train->Drive(0, 0);
+	autonomousCommand.reset(new AutonomousBreakObstacle());
 
 	autonomousCommand->Start();
 }
 
 void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
-	std::cout << "AUTO" << std::endl;
-	SmartDashboard::PutString("String", "is here");
 }
 
 void Robot::TeleopInit() {
 	if (autonomousCommand != NULL) autonomousCommand->Cancel();
 
-	drive_train->Reset();
 	oi->xbox_controller->Calibrate();
 }
 
@@ -62,12 +58,6 @@ void Robot::TeleopPeriodic() {
 
 	if(oi->xbox_controller->GetButton(XBoxController::BUTTON_START)) {
 		oi->xbox_controller->Calibrate();
-	}
-
-	SmartDashboard::PutNumber("LAST", GetTime() - last_inverted_time);
-	drive_train->PrintInvertedStatus();
-	if(GetTime() - last_inverted_time >= 1000 && oi->xbox_controller->GetButton(XBoxController::BUTTON_A)) {
-		drive_train->InvertDirection();
 	}
 }
 
